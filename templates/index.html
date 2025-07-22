@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>E-commerce AI Assistant</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* [ ... your same CSS ... ] */
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #f5f7fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #666;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+
+    .chat-container {
+      width: 100%;
+      max-width: 600px;
+      height: 500px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: fadeIn 1s ease-in;
+    }
+
+    .chat-box {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background-image: url(/static/images/aiHI2.jpg);
+      background-position: center;
+      background-size: 450px;
+      background-repeat: no-repeat;
+      
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 12px 18px;
+      border-radius: 18px;
+      font-size: 1rem;
+      line-height: 1.4;
+      position: relative;
+      animation: slideIn 0.3s ease;
+      white-space: pre-wrap;
+    }
+
+    .user {
+      align-self: flex-end;
+      background: #dcf8c6;
+      border-bottom-right-radius: 0;
+    }
+
+    .bot {
+      align-self: flex-start;
+      background: #e8e8e8;
+      border-bottom-left-radius: 0;
+    }
+
+    .input-area {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 15px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 0;
+      outline: none;
+
+    }
+    .imgai{
+        height: 400px;
+        opacity: 0.5;
+    }
+
+    .input-area button {
+      background: #000000;
+      color: white;
+      border: none;
+      padding: 0 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .input-area button:hover {
+      background: rgb(53, 219, 53);
+      color: white;
+      border-color: #000000;
+     
+    }
+
+    .sql-block {
+      background: #333;
+      color: #eee;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+    }
+
+    .result-table {
+      border-collapse: collapse;
+      margin-top: 10px;
+      width: 100%;
+    }
+    .background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.background-animation .circle {
+  position: absolute;
+  bottom: -100px;
+  width: var(--size);
+  height: var(--size);
+  background-color: rgba(57, 57, 235, 0.482);
+  border-radius: 50%;
+  left: var(--left);
+  animation: rise var(--duration) linear infinite;
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-120vh) scale(1.2);
+    opacity: 0;
+  }
+}
+
+
+    .result-table th,
+    .result-table td {
+      border: 1px solid #aaa;
+      padding: 8px;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    .chart-wrapper {
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    canvas {
+      max-width: 100%;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+    <div class="background-animation">
+        <!-- Generate 15 floating circles -->
+        <div class="circle" style="--size: 60px; --left: 5%; --duration: 18s;"></div>
+        <div class="circle" style="--size: 40px; --left: 15%; --duration: 25s;"></div>
+        <div class="circle" style="--size: 90px; --left: 25%; --duration: 30s;"></div>
+        <div class="circle" style="--size: 20px; --left: 35%; --duration: 15s;"></div>
+        <div class="circle" style="--size: 70px; --left: 45%; --duration: 28s;"></div>
+        <div class="circle" style="--size: 30px; --left: 55%; --duration: 22s;"></div>
+        <div class="circle" style="--size: 80px; --left: 65%; --duration: 20s;"></div>
+        <div class="circle" style="--size: 25px; --left: 75%; --duration: 19s;"></div>
+        <div class="circle" style="--size: 50px; --left: 85%; --duration: 27s;"></div>
+        <div class="circle" style="--size: 60px; --left: 95%; --duration: 23s;"></div>
+      </div>
+      
+
+  <h1>E-commerce AI Assistant</h1>
+  <p>Ask anything about product sales, ads, and eligibility data</p>
+
+  <div class="chat-container">
+   
+    <div class="chat-box" id="chatBox"> </div>
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="Type your question..."/>
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById("chatBox");
+    const userInput = document.getElementById("userInput");
+    let currentChart = null;
+
+    function addMessage(content, sender = "bot") {
+      const msg = document.createElement("div");
+      msg.className = `message ${sender}`;
+      msg.innerHTML = content;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      return msg;
+    }
+
+    async function sendMessage() {
+      const question = userInput.value.trim();
+      if (!question) return;
+
+      addMessage(question, "user");
+      userInput.value = "";
+
+      try {
+        const res = await fetch("http://192.168.29.215:5550/ask", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question })
+        });
+
+        const data = await res.json();
+
+        if (data.error) {
+          addMessage(`<b>Error:</b> ${data.error}`, "bot");
+          return;
+        }
+
+        let html = `<div><b>SQL-AI:</b><br>${data.explanation.replace(/\n/g, "<br>")}</div>`;
+        html += `<div class="sql-block"><b>SQL:</b><br>${data.sql}</div>`;
+
+        const container = addMessage(html, "bot");
+
+        // Table
+        if (data.results && data.results.length > 0) {
+          const table = document.createElement("table");
+          table.className = "result-table";
+          const thead = document.createElement("thead");
+          const tbody = document.createElement("tbody");
+
+          const headers = Object.keys(data.results[0]);
+          const headerRow = document.createElement("tr");
+          headers.forEach(h => {
+            const th = document.createElement("th");
+            th.textContent = h;
+            headerRow.appendChild(th);
+          });
+          thead.appendChild(headerRow);
+
+          data.results.forEach(row => {
+            const tr = document.createElement("tr");
+            headers.forEach(key => {
+              const td = document.createElement("td");
+              td.textContent = row[key];
+              tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+          });
+
+          table.appendChild(thead);
+          table.appendChild(tbody);
+          container.appendChild(table);
+
+          // Chart (if applicable)
+          const numericKey = headers.find(h => typeof data.results[0][h] === 'number');
+          const labelKey = headers.find(h => h !== numericKey);
+
+          if (numericKey && labelKey) {
+            const labels = data.results.map(r => r[labelKey]);
+            const values = data.results.map(r => r[numericKey]);
+
+            const chartWrapper = document.createElement("div");
+            chartWrapper.className = "chart-wrapper";
+            const canvas = document.createElement("canvas");
+            chartWrapper.appendChild(canvas);
+            container.appendChild(chartWrapper);
+
+            if (currentChart) currentChart.destroy();
+            currentChart = new Chart(canvas.getContext("2d"), {
+              type: "bar",
+              data: {
+                labels: labels,
+                datasets: [{
+                  label: numericKey,
+                  data: values,
+                  backgroundColor: "#4CAF50"
+                }]
+              },
+              options: {
+                responsive: true,
+                scales: {
+                  y: { beginAtZero: true }
+                }
+              }
+            });
+          }
+
+        } else {
+          container.innerHTML += `<div><i>No results found.</i></div>`;
+        }
+
+      } catch (err) {
+        console.error(err);
+        addMessage("Oops! There was a problem contacting the server.", "bot");
+      }
+    }
+
+    userInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+</body>
+</html>
