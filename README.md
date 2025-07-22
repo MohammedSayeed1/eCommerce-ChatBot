@@ -1,19 +1,20 @@
 🛍️ E-commerce AI Assistant
 
 An interactive web-based AI assistant built using Flask, JavaScript, and SQL that helps users query and visualize e-commerce data including sales, advertising performance, and product eligibility.
-🚀 Features
 
-    💬 Natural Language Query Interface
+Features
 
-    🧠 AI-Powered SQL Generation using OpenAI
+    -> Natural Language Query Interface
 
-    📊 Tabular Result Presentation
+    -> AI-Powered SQL Generation using OpenAI
 
-    📈 Dynamic Chart Visualization
+    -> Tabular Result Presentation
 
-    🖼️ Smooth UI with Background Animations
+    -> Dynamic Chart Visualization
 
-    🔍 Ask questions like:
+    -> Smooth UI with Background Animations
+
+    -> Ask questions like:
 
         “What are my total sales this month?”
 
@@ -23,12 +24,10 @@ An interactive web-based AI assistant built using Flask, JavaScript, and SQL tha
 
 Tech Stack
 
-    Frontend: HTML5, CSS3, JavaScript (Vanilla)
+   -> Frontend: HTML5, CSS3, JavaScript
 
-    Backend: Flask (Python)
+   -> Backend: Flask (Python)
 
-    Database: SQLite
+   -> Database: SQLite
 
-    AI Model: OpenAI (for NL-to-SQL)
-
-    Visualization: Chart.js
+   -> AI Model: Google's Gemini 2.5 Flash
