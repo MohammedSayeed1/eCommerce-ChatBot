@@ -14,7 +14,7 @@ def load_data():
     total_sales.to_sql("total_sales", engine, if_exists="replace", index=False)
     eligibility.to_sql("eligibility", engine, if_exists="replace", index=False)
 
-    print("✅ Data loaded into ecommerce.db")
+    print("Data loaded into ecommerce.db")
 
 if __name__ == "__main__":
     load_data()
