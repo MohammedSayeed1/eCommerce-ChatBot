@@ -4,21 +4,15 @@ from sqlalchemy import create_engine, text
 from google import genai
 import os
 
-# === 🔐 API Key Setup ===
-# You can also export this as an environment variable externally
-os.environ["GEMINI_API_KEY"] = "AIzaSyCnszQ5iv3AG-lCxBNkUEv66WknyssekK4"
+os.environ["GEMINI_API_KEY"] = "API_KEY(due to security reasons, I have removed it.)"
 
-# === Initialize Gemini Client ===
 client = genai.Client()
 
-# === Flask Setup ===
 app = Flask(__name__)
 CORS(app)
 
-# === Connect to SQLite Database ===
 engine = create_engine("sqlite:///ecommerce.db")
 
-# === Function: Generate SQL from Natural Language ===
 def generate_sql_with_gemini(question):
     prompt = f"""
 You are a helpful and interactive SQL data analyst. When a user asks a question, first explain how you're interpreting the request, then show the SQL query that answers it.
@@ -57,7 +51,6 @@ Question: {question}
         print("Gemini error:", e)
         raise
 
-# === Web Routes ===
 @app.route('/')
 def index():
     return render_template('index.html')  # Your frontend HTML must be in the 'templates' folder
